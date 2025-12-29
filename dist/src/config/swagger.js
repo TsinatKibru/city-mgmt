@@ -1,6 +1,9 @@
-
-const swaggerJsdoc = require('swagger-jsdoc');
-
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const swagger_jsdoc_1 = __importDefault(require("swagger-jsdoc"));
 const options = {
     definition: {
         openapi: '3.0.0',
@@ -58,8 +61,7 @@ const options = {
             },
         },
     },
-    apis: ['./src/routes/*.js'],
+    apis: ['./src/routes/*.ts'], // Updated to search for .ts files
 };
-
-const specs = swaggerJsdoc(options);
-module.exports = specs;
+const specs = (0, swagger_jsdoc_1.default)(options);
+exports.default = specs;

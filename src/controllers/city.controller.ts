@@ -1,7 +1,7 @@
+import { Request, Response, NextFunction } from 'express';
+import cityService from '../services/city.service';
 
-const cityService = require('../services/city.service');
-
-exports.getCities = async (req, res, next) => {
+export const getCities = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const cities = await cityService.getAllCities();
         res.status(200).json({
@@ -14,7 +14,7 @@ exports.getCities = async (req, res, next) => {
     }
 };
 
-exports.getCity = async (req, res, next) => {
+export const getCity = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const city = await cityService.getCityById(req.params.id);
         res.status(200).json({
@@ -26,7 +26,7 @@ exports.getCity = async (req, res, next) => {
     }
 };
 
-exports.createCity = async (req, res, next) => {
+export const createCity = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const city = await cityService.createCity(req.body);
         res.status(201).json({
@@ -38,7 +38,7 @@ exports.createCity = async (req, res, next) => {
     }
 };
 
-exports.updateCity = async (req, res, next) => {
+export const updateCity = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const city = await cityService.updateCity(req.params.id, req.body);
         res.status(200).json({
@@ -50,7 +50,7 @@ exports.updateCity = async (req, res, next) => {
     }
 };
 
-exports.deleteCity = async (req, res, next) => {
+export const deleteCity = async (req: Request, res: Response, next: NextFunction) => {
     try {
         await cityService.deleteCity(req.params.id);
         res.status(200).json({

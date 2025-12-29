@@ -1,9 +1,12 @@
-
-const express = require('express');
-const cors = require('cors');
-const helmet = require('helmet');
-const morgan = require('morgan');
-const errorHandler = require('./middlewares/error.middleware');
+import express from 'express';
+import cors from 'cors';
+import helmet from 'helmet';
+import morgan from 'morgan';
+import swaggerUi from 'swagger-ui-express';
+import swaggerSpecs from './config/swagger';
+import errorHandler from './middlewares/error.middleware';
+import cityRoutes from './routes/city.routes';
+import authRoutes from './routes/auth.routes';
 
 const app = express();
 
@@ -14,8 +17,6 @@ app.use(helmet());
 app.use(morgan('dev'));
 
 // Swagger Docs
-const swaggerUi = require('swagger-ui-express');
-const swaggerSpecs = require('./config/swagger');
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 
 // Basic health check
@@ -24,12 +25,10 @@ app.get('/health', (req, res) => {
 });
 
 // Routes
-const cityRoutes = require('./routes/city.routes');
-const authRoutes = require('./routes/auth.routes');
 app.use('/api/v1/cities', cityRoutes);
 app.use('/api/v1/auth', authRoutes);
 
 // Error Handling
 app.use(errorHandler);
 
-module.exports = app;
+export default app;

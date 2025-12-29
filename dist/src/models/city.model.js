@@ -1,6 +1,6 @@
-
-const { v4: uuidv4 } = require('uuid');
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const uuid_1 = require("uuid");
 let cities = [
     {
         id: '1',
@@ -17,42 +17,36 @@ let cities = [
         createdAt: new Date().toISOString(),
     },
 ];
-
 class CityModel {
-    findAll() {
-        return Promise.resolve(cities);
+    async findAll() {
+        return cities;
     }
-
-    findById(id) {
+    async findById(id) {
         const city = cities.find((c) => c.id === id);
-        return Promise.resolve(city || null);
+        return city || null;
     }
-
-    create(data) {
+    async create(data) {
         const newCity = {
-            id: uuidv4(),
+            id: (0, uuid_1.v4)(),
             ...data,
             createdAt: new Date().toISOString(),
         };
         cities.push(newCity);
-        return Promise.resolve(newCity);
+        return newCity;
     }
-
-    update(id, data) {
+    async update(id, data) {
         const index = cities.findIndex((c) => c.id === id);
-        if (index === -1) return Promise.resolve(null);
-
+        if (index === -1)
+            return null;
         cities[index] = { ...cities[index], ...data };
-        return Promise.resolve(cities[index]);
+        return cities[index];
     }
-
-    delete(id) {
+    async delete(id) {
         const index = cities.findIndex((c) => c.id === id);
-        if (index === -1) return Promise.resolve(false);
-
+        if (index === -1)
+            return false;
         cities.splice(index, 1);
-        return Promise.resolve(true);
+        return true;
     }
 }
-
-module.exports = new CityModel();
+exports.default = new CityModel();

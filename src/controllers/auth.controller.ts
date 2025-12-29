@@ -1,18 +1,16 @@
-
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
-const { JWT_SECRET, JWT_EXPIRE } = require('../config/auth.config');
+import { Request, Response, NextFunction } from 'express';
+import jwt, { Secret, SignOptions } from 'jsonwebtoken';
+import { JWT_SECRET, JWT_EXPIRE } from '../config/auth.config';
 
 // Mock user for job application demonstration
 const mockUser = {
     id: 'user-1',
     email: 'admin@example.com',
-    // In a real app, this would be stored hashed. We'll simulate that.
     password: 'adminpassword',
     role: 'admin',
 };
 
-exports.login = async (req, res, next) => {
+export const login = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { email, password } = req.body;
 
@@ -23,7 +21,6 @@ exports.login = async (req, res, next) => {
             });
         }
 
-        // Check for user
         if (email !== mockUser.email) {
             return res.status(401).json({
                 success: false,
@@ -31,8 +28,6 @@ exports.login = async (req, res, next) => {
             });
         }
 
-        // Check password
-        // In a real app: const isMatch = await bcrypt.compare(password, mockUser.password);
         const isMatch = password === mockUser.password;
 
         if (!isMatch) {
@@ -42,11 +37,14 @@ exports.login = async (req, res, next) => {
             });
         }
 
-        // Create token
+        const options: SignOptions = {
+            expiresIn: JWT_EXPIRE as any, // Cast because of specific library type requirements
+        };
+
         const token = jwt.sign(
             { id: mockUser.id, role: mockUser.role },
-            JWT_SECRET,
-            { expiresIn: JWT_EXPIRE }
+            JWT_SECRET as Secret,
+            options
         );
 
         res.status(200).json({

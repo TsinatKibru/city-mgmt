@@ -1,9 +1,10 @@
-const express = require('express');
+import express from 'express';
+import * as cityController from '../controllers/city.controller';
+import validate from '../middlewares/validate.middleware';
+import { protect, authorize } from '../middlewares/auth.middleware';
+import { createCitySchema, updateCitySchema } from '../schemas/city.schema';
+
 const router = express.Router();
-const cityController = require('../controllers/city.controller');
-const validate = require('../middlewares/validate.middleware');
-const { protect, authorize } = require('../middlewares/auth.middleware');
-const { createCitySchema, updateCitySchema } = require('../schemas/city.schema');
 
 /**
  * @swagger
@@ -35,6 +36,12 @@ const { createCitySchema, updateCitySchema } = require('../schemas/city.schema')
  *                   type: array
  *                   items:
  *                     $ref: '#/components/schemas/City'
+ */
+router.get('/', cityController.getCities);
+
+/**
+ * @swagger
+ * /cities:
  *   post:
  *     summary: Create a new city (Admin Only)
  *     description: Requires a valid JWT with 'admin' role.
@@ -75,10 +82,7 @@ const { createCitySchema, updateCitySchema } = require('../schemas/city.schema')
  *       401:
  *         description: Unauthorized
  */
-router
-    .route('/')
-    .get(cityController.getCities)
-    .post(protect, authorize('admin'), validate(createCitySchema), cityController.createCity);
+router.post('/', protect, authorize('admin'), validate(createCitySchema), cityController.createCity);
 
 /**
  * @swagger
@@ -108,6 +112,12 @@ router
  *                   $ref: '#/components/schemas/City'
  *       404:
  *         description: City not found
+ */
+router.get('/:id', cityController.getCity);
+
+/**
+ * @swagger
+ * /cities/{id}:
  *   put:
  *     summary: Update the city by the id (Admin Only)
  *     description: Requires a valid JWT with 'admin' role.
@@ -150,6 +160,12 @@ router
  *         description: City not found
  *       401:
  *         description: Unauthorized
+ */
+router.put('/:id', protect, authorize('admin'), validate(updateCitySchema), cityController.updateCity);
+
+/**
+ * @swagger
+ * /cities/{id}:
  *   delete:
  *     summary: Remove the city by id (Admin Only)
  *     description: Requires a valid JWT with 'admin' role.
@@ -171,10 +187,6 @@ router
  *       401:
  *         description: Unauthorized
  */
-router
-    .route('/:id')
-    .get(cityController.getCity)
-    .put(protect, authorize('admin'), validate(updateCitySchema), cityController.updateCity)
-    .delete(protect, authorize('admin'), cityController.deleteCity);
+router.delete('/:id', protect, authorize('admin'), cityController.deleteCity);
 
-module.exports = router;
+export default router;

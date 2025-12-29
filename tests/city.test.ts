@@ -1,10 +1,9 @@
-
-const request = require('supertest');
-const app = require('../src/app');
+import request from 'supertest';
+import app from '../src/app';
 
 describe('City API', () => {
-    let createdCityId;
-    let token;
+    let createdCityId: string;
+    let token: string;
 
     beforeAll(async () => {
         // Login to get token for protected routes
