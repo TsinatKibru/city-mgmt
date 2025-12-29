@@ -10,7 +10,9 @@ const errorHandler = (
     res: Response,
     next: NextFunction
 ) => {
-    console.error(err.stack);
+    if (process.env.NODE_ENV !== 'test') {
+        console.error(err.stack);
+    }
 
     const statusCode = err.statusCode || 500;
     const message = err.message || 'Internal Server Error';
