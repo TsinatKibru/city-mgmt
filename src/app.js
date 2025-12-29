@@ -25,7 +25,9 @@ app.get('/health', (req, res) => {
 
 // Routes
 const cityRoutes = require('./routes/city.routes');
+const authRoutes = require('./routes/auth.routes');
 app.use('/api/v1/cities', cityRoutes);
+app.use('/api/v1/auth', authRoutes);
 
 // Error Handling
 app.use(errorHandler);

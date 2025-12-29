@@ -1,8 +1,8 @@
-
 const express = require('express');
 const router = express.Router();
 const cityController = require('../controllers/city.controller');
 const validate = require('../middlewares/validate.middleware');
+const { protect, authorize } = require('../middlewares/auth.middleware');
 const { createCitySchema, updateCitySchema } = require('../schemas/city.schema');
 
 /**
@@ -36,6 +36,8 @@ const { createCitySchema, updateCitySchema } = require('../schemas/city.schema')
  *                     $ref: '#/components/schemas/City'
  *   post:
  *     summary: Create a new city
+ *     security:
+ *       - bearerAuth: []
  *     tags: [Cities]
  *     requestBody:
  *       required: true
@@ -68,11 +70,13 @@ const { createCitySchema, updateCitySchema } = require('../schemas/city.schema')
  *                   $ref: '#/components/schemas/City'
  *       400:
  *         description: Validation error
+ *       401:
+ *         description: Unauthorized
  */
 router
     .route('/')
     .get(cityController.getCities)
-    .post(validate(createCitySchema), cityController.createCity);
+    .post(protect, authorize('admin'), validate(createCitySchema), cityController.createCity);
 
 /**
  * @swagger
@@ -103,6 +107,8 @@ router
  *         description: City not found
  *   put:
  *     summary: Update the city by the id
+ *     security:
+ *       - bearerAuth: []
  *     tags: [Cities]
  *     parameters:
  *       - in: path
@@ -138,8 +144,12 @@ router
  *                   $ref: '#/components/schemas/City'
  *       404:
  *         description: City not found
+ *       401:
+ *         description: Unauthorized
  *   delete:
  *     summary: Remove the city by id
+ *     security:
+ *       - bearerAuth: []
  *     tags: [Cities]
  *     parameters:
  *       - in: path
@@ -153,11 +163,13 @@ router
  *         description: The city was deleted
  *       404:
  *         description: City not found
+ *       401:
+ *         description: Unauthorized
  */
 router
     .route('/:id')
     .get(cityController.getCity)
-    .put(validate(updateCitySchema), cityController.updateCity)
-    .delete(cityController.deleteCity);
+    .put(protect, authorize('admin'), validate(updateCitySchema), cityController.updateCity)
+    .delete(protect, authorize('admin'), cityController.deleteCity);
 
 module.exports = router;

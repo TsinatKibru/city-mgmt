@@ -5,6 +5,9 @@ A production-ready, clean-architecture REST API built with Express.js for managi
 ## 🚀 Key Features
 
 -   **Clean Architecture**: Structured with a clear separation of concerns (Routes, Controllers, Services, Models).
+-   **JWT Authentication**: Secure login endpoint providing JSON Web Tokens.
+-   **Role-Based Access Control (RBAC)**: Protected write operations (POST, PUT, DELETE) restricted to 'admin' role.
+-   **CI/CD Pipeline**: Integrated GitHub Actions for automated testing on every push and pull request.
 -   **Robust Validation**: Integrated `Zod` for schema-based request validation.
 -   **Interactive Documentation**: Automated API documentation using Swagger UI.
 -   **Automated Testing**: Integration tests powered by `Jest` and `Supertest`.
@@ -69,7 +72,20 @@ tests/                  # Automated integration tests
 
 The API will be available at `http://localhost:3000`.
 
-## 📚 API Documentation
+## � Authentication & Mock Credentials
+
+This API uses JWT Bearer Token authentication. Some endpoints (POST, PUT, DELETE) require an `admin` role.
+
+**Mock Admin User:**
+- **Email:** `admin@example.com`
+- **Password:** `adminpassword`
+
+To use protected routes:
+1. POST to `/api/v1/auth/login` with the credentials above.
+2. Copy the `token` from the response.
+3. Add the header: `Authorization: Bearer <your-token>`.
+
+## �📚 API Documentation
 
 Once the server is running, you can access the interactive Swagger UI documentation at:
 👉 **[http://localhost:3000/api-docs](http://localhost:3000/api-docs)**
