@@ -16,7 +16,8 @@ const { createCitySchema, updateCitySchema } = require('../schemas/city.schema')
  * @swagger
  * /cities:
  *   get:
- *     summary: Returns the list of all the cities
+ *     summary: Returns the list of all the cities (Public)
+ *     description: Accessible by anyone. Does not require authentication.
  *     tags: [Cities]
  *     responses:
  *       200:
@@ -35,7 +36,8 @@ const { createCitySchema, updateCitySchema } = require('../schemas/city.schema')
  *                   items:
  *                     $ref: '#/components/schemas/City'
  *   post:
- *     summary: Create a new city
+ *     summary: Create a new city (Admin Only)
+ *     description: Requires a valid JWT with 'admin' role.
  *     security:
  *       - bearerAuth: []
  *     tags: [Cities]
@@ -82,7 +84,8 @@ router
  * @swagger
  * /cities/{id}:
  *   get:
- *     summary: Get the city by id
+ *     summary: Get the city by id (Public)
+ *     description: Accessible by anyone. Does not require authentication.
  *     tags: [Cities]
  *     parameters:
  *       - in: path
@@ -106,7 +109,8 @@ router
  *       404:
  *         description: City not found
  *   put:
- *     summary: Update the city by the id
+ *     summary: Update the city by the id (Admin Only)
+ *     description: Requires a valid JWT with 'admin' role.
  *     security:
  *       - bearerAuth: []
  *     tags: [Cities]
@@ -147,7 +151,8 @@ router
  *       401:
  *         description: Unauthorized
  *   delete:
- *     summary: Remove the city by id
+ *     summary: Remove the city by id (Admin Only)
+ *     description: Requires a valid JWT with 'admin' role.
  *     security:
  *       - bearerAuth: []
  *     tags: [Cities]
